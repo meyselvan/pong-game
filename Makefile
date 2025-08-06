@@ -72,4 +72,7 @@ help:
 re: fclean all
 	@echo "\033[35m🔄 Rebuilding and restarting all services...\033[0m"
 
-.PHONY: all backend backend-bg frontend frontend-bg websocket-test websocket-test-bg clean clean-db kill status fclean help re
+restart: kill all
+	@echo "\033[35m🔄 Restarting all services...\033[0m"
+
+.PHONY: all backend backend-bg frontend frontend-bg websocket-test websocket-test-bg clean clean-db kill status fclean help re restart

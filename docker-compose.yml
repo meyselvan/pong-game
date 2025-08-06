@@ -1,0 +1,91 @@
+version: "3.7"
+
+services:
+  
+  nginx:
+    build: 
+      context: .
+      dockerfile: ./frontend-v2/nginx/Dockerfile
+    volumes:
+      - sqlite-data:/data
+    container_name: nginx
+    ports:
+      - "8080:8080"
+    networks:
+      - transcendence
+    depends_on:
+      - auth-service
+
+  auth-service:
+    build: 
+      context: .
+      dockerfile: ./backend/services/auth-service/Dockerfile
+    container_name: auth-service
+    volumes:
+      - sqlite-data:/data
+    ports:
+      - "3000:3000"
+    networks:
+      - transcendence
+
+  chat-service:
+    build: 
+      context: .
+      dockerfile: ./backend/services/chat-service/Dockerfile
+    container_name: chat-service
+    volumes:
+      - sqlite-data:/data
+    ports:
+      - "3001:3001"
+    networks:
+      - transcendence
+
+  friend-service:
+    build: 
+      context: .
+      dockerfile: ./backend/services/friend-service/Dockerfile
+    container_name: friend-service
+    volumes:
+      - sqlite-data:/data
+    ports:
+      - "3002:3002"
+    networks:
+      - transcendence
+
+  game-service:
+    build: 
+      context: .
+      dockerfile: ./backend/services/game-service/Dockerfile
+    container_name: game-service
+    volumes:
+      - sqlite-data:/data
+    ports:
+      - "3003:3003"
+    networks:
+      - transcendence
+
+  user-service:
+    build: 
+      context: .
+      dockerfile: ./backend/services/user-service/Dockerfile
+    container_name: user-service
+    volumes:
+      - sqlite-data:/data
+    ports:
+      - "3004:3004"
+    networks:
+      - transcendence
+
+volumes:
+  sqlite-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/relvan/data/sqlite-data
+    name: sqlite-data
+
+networks:
+  transcendence:
+    driver: bridge
+    name: transcendence
